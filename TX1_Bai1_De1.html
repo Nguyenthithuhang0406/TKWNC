@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 1 - Form</title>
+  <script src="jquery-3.7.1.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 500px;
+      height: 520px;
+      border: 1px solid #d9d9d9;
+      padding: 3px;
+    }
+
+    .table {
+      border: 1px solid #d9d9d9;
+      padding: 3px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background-color: rgb(173, 173, 173);
+    }
+
+    h1 {
+      margin: 0;
+      width: 100%;
+      height: 70px;
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+      border: 1px solid #d9d9d9;
+    }
+
+    .item {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3px;
+    }
+
+    lable {
+      width: 40%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #d9d9d9;
+      font-weight: bold;
+    }
+
+    .input {
+      width: 60%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #d9d9d9;
+    }
+
+    input {
+      width: 200px;
+      height: 30px;
+      background-color: #ccc;
+      border: 1px solid #d9d9d9;
+    }
+
+    .btn-group {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      gap: 3px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button {
+      width: 100px;
+      height: 40px;
+      background-color: #ccc;
+      border: 1px solid #d9d9d9;
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    $(document).ready(function () {
+      $(".caculate").click(function () {
+        let code = $(".code").val();
+        let name = $(".name").val();
+        let type = $(".type").val().trim();
+
+        if (type !== "K" && type !== "G" && type !== "T" && type !== "S" && type !== "X") {
+          alert("Loại hàng không hợp lệ");
+          return;
+        }
+        let quantity = parseInt($(".quantity").val());
+        let month = parseInt($(".month").val());
+
+        if (!code || !name || !type || !quantity || !month) {
+          alert("Vui lòng nhập đầy đủ thông tin");
+          return;
+        }
+
+        let price = 0;
+        if (type === "K") {
+          price = 10000;
+        } else {
+          if (type === "G") {
+            price = 75000;
+          } else {
+            if (type === "T") {
+              price = 12000;
+            } else {
+              if (type === " S") {
+                price = 30000;
+              } else {
+                price = 35000;
+              }
+            }
+          }
+        }
+
+        let totalPrice = price * quantity;
+        $(".totalPrice").val(totalPrice);
+
+        let tyle = 0;
+        if (month <= 3) {
+          tyle = 0.012;
+        } else {
+          if (month >= 4 && month <= 9) {
+            tyle = 0.015;
+          } else {
+            if (month >= 10 && month <= 12) {
+              tyle = 0.0175;
+            } else {
+              alert("Tháng không hợp lệ");
+            }
+          }
+        }
+
+        let tax = totalPrice * tyle;
+        $(".tax").val(tax);
+
+        let prev = 0;
+        if (totalPrice >= 5000000) {
+          prev = totalPrice * 0.75;
+        } else {
+          prev = totalPrice * 0.5;
+        }
+
+        $(".prev").val(prev);
+
+        let result = totalPrice - prev;
+        $(".result").val(result);
+      })
+
+      $(".reset").click(function () {
+        $(".code").val("");
+        $(".name").val("");
+        $(".type").val("");
+        $(".quantity").val("");
+        $(".month").val("");
+        $(".totalPrice").val("");
+        $(".tax").val("");
+        $(".prev").val("");
+        $(".result").val("");
+      })
+    })
+
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="table">
+      <h1>BẢNG THỐNG KÊ NHẬP XUẤT HÀNG NĂM 2020</h1>
+      <div class="item">
+        <lable>Mã hàng: </lable>
+        <div class="input">
+          <input type="text" name="code" class="code" />
+        </div>
+      </div>
+      <div class="item">
+        <lable>Tên hàng: </lable>
+        <div class="input">
+          <input type="text" name="name" class="name" />
+        </div>
+      </div>
+      <div class="item">
+        <lable>Loại hàng: </lable>
+        <div class="input">
+          <input type="text" name="type" class="type" />
+        </div>
+      </div>
+      <div class="item">
+        <lable>Số lượng: </lable>
+        <div class="input">
+          <input type="number" name="quantity" class="quantity" />
+        </div>
+      </div>
+      <div class="item">
+        <lable>Tháng nhập: </lable>
+        <div class="input">
+          <input type="number" name="month" class="month" />
+        </div>
+      </div>
+      <div class="item">
+        <lable>Thành tiền: </lable>
+        <div class="input">
+          <input type="number" name="totalPrice" class="totalPrice" disabled />
+        </div>
+      </div>
+      <div class="item">
+        <lable>Thuế: </lable>
+        <div class="input">
+          <input type="number" name="tax" class="tax" disabled />
+        </div>
+      </div>
+      <div class="item">
+        <lable>Trả trước: </lable>
+        <div class="input">
+          <input type="number" name="prev" class="prev" disabled />
+        </div>
+      </div>
+      <div class="item">
+        <lable>Còn lại: </lable>
+        <div class="input">
+          <input type="number" name="result" class="result" disabled />
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="reset">Xoá</button>
+        <button class="caculate">Tính tiền</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
